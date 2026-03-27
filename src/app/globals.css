@@ -1,0 +1,148 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body:    'Outfit', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  color: #f5f0e0;
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  overflow-x: hidden;
+
+  /* Real courtroom background */
+  background-color: #1a0e05;
+  background-image:
+    /* Ceiling light cone from top */
+    radial-gradient(ellipse 60% 40% at 50% -5%, rgba(255,220,120,0.18) 0%, transparent 70%),
+    /* Warm ambient light */
+    radial-gradient(ellipse 100% 60% at 50% 100%, rgba(80,40,10,0.8) 0%, transparent 60%),
+    /* Wood panel vertical lines */
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 60px,
+      rgba(0,0,0,0.12) 60px,
+      rgba(0,0,0,0.12) 62px
+    ),
+    /* Wood grain horizontal */
+    repeating-linear-gradient(
+      180deg,
+      transparent,
+      transparent 4px,
+      rgba(0,0,0,0.04) 4px,
+      rgba(0,0,0,0.04) 5px
+    ),
+    /* Base wood color gradient */
+    linear-gradient(180deg,
+      #0d0802 0%,
+      #1e1006 15%,
+      #2a1608 30%,
+      #1e1006 60%,
+      #120b04 100%
+    );
+}
+
+/* Spotlight from above */
+body::before {
+  content: '';
+  position: fixed;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(ellipse, rgba(255,200,80,0.12) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Dark vignette on sides */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,0.7) 0%, transparent 25%, transparent 75%, rgba(0,0,0,0.7) 100%),
+    linear-gradient(180deg, rgba(0,0,0,0.3) 0%, transparent 20%, transparent 80%, rgba(0,0,0,0.6) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.3); border-radius: 2px; }
+
+/* ── Animations ── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes shake {
+  0%,100% { transform: translateX(0) rotate(0deg); }
+  20%     { transform: translateX(-10px) rotate(-1deg); }
+  40%     { transform: translateX(10px) rotate(1deg); }
+  60%     { transform: translateX(-5px) rotate(-0.5deg); }
+  80%     { transform: translateX(5px) rotate(0.5deg); }
+}
+@keyframes gavel-slam {
+  0%   { transform: rotate(-35deg) translateY(0px); }
+  35%  { transform: rotate(25deg) translateY(12px); }
+  50%  { transform: rotate(25deg) translateY(12px); }
+  65%  { transform: rotate(25deg) translateY(12px); }
+  100% { transform: rotate(-35deg) translateY(0px); }
+}
+@keyframes verdict-drop {
+  0%   { transform: scale(1.5) translateY(-30px); opacity: 0; filter: blur(12px); }
+  60%  { transform: scale(0.96) translateY(4px); opacity: 1; filter: blur(0); }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+@keyframes stamp {
+  0%   { transform: scale(2.2) rotate(-12deg); opacity: 0; }
+  55%  { transform: scale(0.94) rotate(2deg); opacity: 1; }
+  100% { transform: scale(1) rotate(-3deg); opacity: 1; }
+}
+@keyframes flicker {
+  0%,89%,91%,95%,100% { opacity: 1; }
+  90%  { opacity: 0.6; }
+  93%  { opacity: 0.85; }
+  94%  { opacity: 0.5; }
+}
+@keyframes candle-flicker {
+  0%,100% { transform: scaleY(1) scaleX(1); opacity: 1; }
+  25%     { transform: scaleY(1.08) scaleX(0.94); opacity: 0.9; }
+  50%     { transform: scaleY(0.94) scaleX(1.06); opacity: 1; }
+  75%     { transform: scaleY(1.04) scaleX(0.97); opacity: 0.95; }
+}
+@keyframes float {
+  0%,100% { transform: translateY(0px); }
+  50%     { transform: translateY(-6px); }
+}
+
+.animate-fade-up    { animation: fade-up 0.6s cubic-bezier(0.16,1,0.3,1) both; }
+.animate-fade-in    { animation: fade-in 0.4s ease both; }
+.animate-shake      { animation: shake 0.5s ease-in-out; }
+.animate-gavel      { animation: gavel-slam 0.7s cubic-bezier(0.16,1,0.3,1); }
+.animate-verdict    { animation: verdict-drop 0.7s cubic-bezier(0.16,1,0.3,1) both; }
+.animate-stamp      { animation: stamp 0.5s cubic-bezier(0.16,1,0.3,1) both; }
+.animate-flicker    { animation: flicker 5s ease-in-out infinite; }
+.animate-float      { animation: float 3s ease-in-out infinite; }
+
+.delay-100 { animation-delay: 0.10s; }
+.delay-200 { animation-delay: 0.20s; }
+.delay-300 { animation-delay: 0.30s; }
+.delay-400 { animation-delay: 0.40s; }
+.delay-500 { animation-delay: 0.50s; }
+.delay-600 { animation-delay: 0.60s; }
